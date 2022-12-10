@@ -7,5 +7,6 @@ import {
 
 interface IArrakisV2Extended is IArrakisV2 {
     function setRestrictedMint(address) external;
+
     function restrictedMint() external view returns (address);
 }

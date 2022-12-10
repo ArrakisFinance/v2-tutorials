@@ -32,3 +32,6 @@ dist
 # VS Code
 .vscode
 
+# vault files
+.tutorial1.*
+

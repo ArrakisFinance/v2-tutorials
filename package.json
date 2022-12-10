@@ -14,7 +14,10 @@
     "prepack": "pinst --disable",
     "postpack": "pinst --enable",
     "test": "npx hardhat test",
-    "verify": "npx hardhat etherscan-verify"
+    "verify": "npx hardhat etherscan-verify",
+    "tutorial1-init": "npx hardhat run ./tutorial1/initPrivateVault.ts",
+    "tutorial1-status": "npx hardhat run ./tutorial1/getVaultStatus.ts",
+    "tutorial1-setPosition": "npx hardhat run ./tutorial1/setVaultLiquidity.ts"
   },
   "devDependencies": {
     "@arrakisfi/v2-core": "0.1.4",
@@ -29,6 +32,7 @@
     "@typescript-eslint/eslint-plugin": "5.28.0",
     "@typescript-eslint/parser": "5.28.0",
     "@uniswap/v3-core": "1.0.1",
+    "@uniswap/v3-sdk": "3.9.0",
     "dotenv": "16.0.1",
     "eslint": "8.18.0",
     "eslint-config-prettier": "8.3.0",
