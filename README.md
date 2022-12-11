@@ -67,5 +67,5 @@ $ yarn tutorial1-status --network polygon
 Get all your DAI and WETH tokens back with
 
 ```
-$ yarn tutorial1-withdraw
+$ yarn tutorial1-withdraw --network polygon
 ```
