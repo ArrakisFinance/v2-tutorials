@@ -45,7 +45,7 @@ async function main() {
     hre.network.name === "optimism"
   ) {
     console.log(
-      `Deploying DAI/WETH vault to ${
+      `Deploying new DAI/WETH vault to ${
         hre.network.name
       }\nGas Info:\nMaxFeePerGas: ${Number(
         ethers.utils.formatUnits(maxFeePerGas, "gwei")
@@ -149,6 +149,7 @@ async function main() {
       maxPriorityFeePerGas: maxPriorityFeePerGas,
     }
   );
+  console.log("tx hash:", tx.hash);
   const rc = await tx.wait();
   const event = rc?.events?.find((e) => e.event === "VaultCreated");
   // eslint-disable-next-line no-unsafe-optional-chaining
@@ -183,6 +184,7 @@ async function main() {
     maxFeePerGas: maxFeePerGas,
     maxPriorityFeePerGas: maxPriorityFeePerGas,
   });
+  console.log("tx hash:", tx2.hash);
   await tx2.wait();
 
   const restrictedMintCheck = await vaultContract.restrictedMint();
@@ -215,6 +217,7 @@ async function main() {
     maxFeePerGas: maxFeePerGas,
     maxPriorityFeePerGas: maxPriorityFeePerGas,
   });
+  console.log("tx hash:", tx3.hash);
   await tx3.wait();
 
   console.log("depositing...");
@@ -235,10 +238,12 @@ async function main() {
     maxFeePerGas: maxPriorityFeePerGas,
     maxPriorityFeePerGas: maxPriorityFeePerGas,
   });
+  console.log("tx hash:", tx4.hash);
   tx4.wait();
 
-  console.log("Success! ArrakisV2 Vault Address: ", vault);
+  console.log("\nStoring ArrakisV2 Vault Address:", vault);
   writeFileSync(`.tutorial1.${hre.network.name}`, vault);
+  console.log("\nComplete!");
 }
 
 main()
