@@ -33,7 +33,7 @@ async function main() {
   });
   const [user] = await ethers.getSigners();
   let feeData =
-    Number(maxFeeGlobal) > 0
+    Number(maxFeeGlobal) > 0 && Number(maxPriorityFeeGlobal) > 0
       ? {
           maxFeePerGas: BigNumber.from(maxFeeGlobal),
           maxPriorityFeePerGas: BigNumber.from(maxPriorityFeeGlobal),
@@ -92,6 +92,7 @@ async function main() {
   const slot0A = await poolA.slot0();
   const tickA = slot0A.tick;
   let tickLowerA = Number(tickA.toString()) - tickDeltaByFeeTier[0];
+  //
   const modLowerA = tickLowerA % tickSpacingByFeeTier[0];
   if (modLowerA != 0) {
     tickLowerA = tickLowerA - modLowerA;

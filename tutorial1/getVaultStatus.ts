@@ -42,6 +42,17 @@ async function main() {
   );
   const liquidity0 = result.amount0.sub(result.leftOver0).sub(result.fee0);
   const liquidity1 = result.amount1.sub(result.leftOver1).sub(result.fee1);
+  console.log("overview:\n");
+  console.log({
+    total0: `${ethers.utils.formatUnits(
+      result.amount0,
+      t0Decimals.toString()
+    )} ${t0Symbol}`,
+    total1: `${ethers.utils.formatUnits(
+      result.amount1,
+      t1Decimals.toString()
+    )} ${t1Symbol}`,
+  });
   const output = {
     liquidity0: `${ethers.utils.formatUnits(
       liquidity0,
@@ -68,6 +79,7 @@ async function main() {
       t1Decimals.toString()
     )} ${t1Symbol}`,
   };
+  console.log("\nbreakdown:\n");
   console.log(output);
   const result2 = await arrakisV2Helper.token0AndToken1ByRange(
     ranges,
@@ -76,7 +88,7 @@ async function main() {
     vaultAddr
   );
   if (result2.amount0s.length > 0) {
-    console.log("\n\nliquidity positions:\n");
+    console.log("\nliquidity positions:\n");
     for (let i = 0; i < result2.amount0s.length; i++) {
       console.log({
         range: {
