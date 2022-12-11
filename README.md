@@ -4,7 +4,7 @@
 
 In this tutorial we walk through using ArrakisV2 as a solo LP managing their personal Uniswap V3 liquidity positions on the DAI/WETH token pair.
 
-Follow the tutorial step-by-step with detailed explanations [here](https://google.com) (T.B.D.
+Follow the tutorial step-by-step with detailed explanations [here](https://google.com) (T.B.D. see outline for tutorial below)
 
 ### Step 1: Setup Environment
 
@@ -26,29 +26,23 @@ PK=0xffffffffffffffffffffffffffffffffffffffffffffffffffffffff
 
 ### Step 2: Create ArrakisV2 Vault Instance
 
-First, fund your address from Step 1 with some MATIC (for gas costs) and at least 1 DAI, on polygon (matic) mainnet. (Acquiring or bridging tokens to matic mainnet is outside the scope of this tutorial)
+First, fund your address from Step 1 with some MATIC (for gas costs) and at least 1 DAI, on polygon (matic) mainnet.
 
-Now we will run a script to initialize a private ArrakisV2 Vault on the DAI/WETH token pair:
+Now we will run a command to initialize a private ArrakisV2 Vault on the DAI/WETH token pair:
 
 ```
 $ yarn tutorial1-init --network polygon
 ```
 
-(issues with gas pricing? you can manually override gas prices with `MAX_FEE_OVERRIDE` and `MAX_PRIORITY_FEE_OVERRIDE` variables in the `.env` file.)
+(issues with gas pricing? you can manually override gas prices with `MAX_FEE_OVERRIDE` and `MAX_PRIORITY_FEE_OVERRIDE` variables in the `.env` file, expressed as integers in wei units)
 
-Congrats! You instantiated a private ArrakisV2 vault on matic mainnet.
-
-Here's what got accomplished:
-
-1. Create DAI/WETH ArrakisV2 vault and whitelist a few uniswap V3 fee tiers for use.
-2. Set your address as the owner and manager of the vault as well as the `restrictedMint` so only your address may mint more LP shares.
-3. Mint 1 LP share by depositing 1 DAI to finish initializing the private vault.
+Congrats! You instantiated a private ArrakisV2 vault on matic mainnet. At the end of the script you should see the address of your newly created DAI/WETH vault, and you can verify that 1 DAI was deposited in there.
 
 ### Step 3: Fund vault with DAI and WETH
 
 Copy the vault address output in Step 2 and transfer WETH and DAI from anywhere to the newly created vault address on matic mainnet. For the purposes of the tutorial, try to make it close to 50/50 in dollar value if you can! (e.g. transfer in 4 DAI + 1 DAI already deposited in Step 1 and transfer $5 worth of WETH)
 
-NOTE: (Your wallet may throw a warning here, which makes sense since **you should never send tokens directly to an ERC20 token contract unless you know exactly what and why you are doing this** but in this particular case it's entirely safe. You'll be able to retreive all tokens back from the vault by calling `burn()` and burning the Arrakis LP token you hold in your wallet).
+NOTE: Your wallet may throw a warning here, which makes sense since **YOU SHOULD NEVER SEND TOKENS DIRECTLY TO AN ERC20 CONTRACT ADDRESS UNLESS YOU KNOW WHAT YOU ARE DOING** but in this particular case it happens to be safe. As long as you are the sole owner of the entire supply of this Arrakis LP token you can retreive all DAI and WETH holdings from the vault or any of its Uniswap V3 liquidity positions by burning the LP token supply. **NOT THE CASE FOR ARRAKIS LP TOKENS WITH MULTIPLE DISTINCT SHAREHOLDERS WHERE SENDING TOKENS DIRECTLY TO THE CONTRACT WOULD DISTRIBUTE THOSE TOKENS PROPORTIONALLY OVER ALL HOLDERS**
 
 ### Step 4: Deposit liquidity
 
