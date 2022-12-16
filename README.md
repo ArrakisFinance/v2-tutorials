@@ -11,9 +11,9 @@ Follow the tutorial step-by-step with detailed explanations [here](https://googl
 1. clone repository: `git clone https://github.com/ArrakisFinance/v2-tutorials.git`
 2. enter repository: `cd v2-tutorials`
 3. download dependencies: `yarn` (don't have yarn? see [here](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable))
-4. compile contracts: `yarn compile`
-5. create `.env` file: `touch .env`
-6. fill in `ALCHEMY_ID` variable in the `.env` file (don't have an alchemy api key? see [here](https://www.alchemy.com/))
+4. create `.env` file: `touch .env`
+5. fill in `ALCHEMY_ID` variable in the `.env` file (don't have an alchemy api key? see [here](https://www.alchemy.com/))
+6. compile contracts: `yarn compile`
 7. choose the polygon address you want to use for this tutorial (need a wallet? get metamask [here](https://metamask.io/) add polygon rpc [here](https://wiki.polygon.technology/docs/develop/metamask/config-polygon-on-metamask/)).
 8. fill in `PK` variable in the `.env` file with hexadecimal private key for your address, `0x` prefixed (how to export metamask private key? see [here](https://metamask.zendesk.com/hc/en-us/articles/360015289632-How-to-export-an-account-s-private-key#:~:text=On%20the%20account%20page%2C%20click,click%20%E2%80%9CConfirm%E2%80%9D%20to%20proceed.))
 
