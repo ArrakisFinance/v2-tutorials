@@ -17,9 +17,9 @@ Follow the tutorial step-by-step with detailed explanations [here](https://googl
 7. choose the polygon address you want to use for this tutorial (need a wallet? get metamask [here](https://metamask.io/) add polygon rpc [here](https://wiki.polygon.technology/docs/develop/metamask/config-polygon-on-metamask/)).
 8. fill in `PK` variable in the `.env` file with hexadecimal private key for your address, `0x` prefixed (how to export metamask private key? see [here](https://metamask.zendesk.com/hc/en-us/articles/360015289632-How-to-export-an-account-s-private-key#:~:text=On%20the%20account%20page%2C%20click,click%20%E2%80%9CConfirm%E2%80%9D%20to%20proceed.))
 
-Finally, if you face issues with gas pricing in subsequent steps? you can manually override gas prices by optionally adding `MAX_FEE_OVERRIDE` and `MAX_PRIORITY_FEE_OVERRIDE` variables in the `.env` file.
+Finally, if you face issues with gas pricing in subsequent steps, you can manually override gas prices by optionally adding `MAX_FEE_OVERRIDE` and `MAX_PRIORITY_FEE_OVERRIDE` variables in the `.env` file.
 
-Your `.env` file should now look something like this (in this case, forcing a 40 gwei gas price):
+Your `.env` file may now look something like this (in this case, forcing a 40 gwei gas price):
 
 ```
 ALCHEMY_ID=aaaaaaaaaaaaaaaaaaaaaaaaaaaa
