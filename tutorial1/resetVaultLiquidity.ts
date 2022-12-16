@@ -247,20 +247,21 @@ async function main() {
   ) {
     adds = [];
     removes = [];
-  }
-  if (
-    adds[0].lowerTick == removes[0].lowerTick &&
-    adds[0].upperTick == removes[0].upperTick
-  ) {
-    adds = [adds[1]];
-    removes = [removes[1]];
-  }
-  if (
-    adds[1].lowerTick == removes[1].lowerTick &&
-    adds[1].upperTick == removes[1].upperTick
-  ) {
-    adds = [adds[0]];
-    removes = [removes[0]];
+  } else {
+    if (
+      adds[0].lowerTick == removes[0].lowerTick &&
+      adds[0].upperTick == removes[0].upperTick
+    ) {
+      adds = [adds[1]];
+      removes = [removes[1]];
+    }
+    if (
+      adds[1].lowerTick == removes[1].lowerTick &&
+      adds[1].upperTick == removes[1].upperTick
+    ) {
+      adds = [adds[0]];
+      removes = [removes[0]];
+    }
   }
   console.log("rebalance tx...");
   const gasEstimate = await vault.estimateGas.rebalance(
