@@ -17,9 +17,9 @@ Follow the tutorial step-by-step with detailed explanations [here](https://googl
 7. choose the polygon address you want to use for this tutorial (need a wallet? get metamask [here](https://metamask.io/) add polygon rpc [here](https://wiki.polygon.technology/docs/develop/metamask/config-polygon-on-metamask/)).
 8. fill in `PK` variable in the `.env` file with hexadecimal private key for your address, `0x` prefixed (how to export metamask private key? see [here](https://metamask.zendesk.com/hc/en-us/articles/360015289632-How-to-export-an-account-s-private-key#:~:text=On%20the%20account%20page%2C%20click,click%20%E2%80%9CConfirm%E2%80%9D%20to%20proceed.))
 
-Finally, if you face issues with gas pricing in subsequent steps? you can manually override gas prices by optionally adding `MAX_FEE_OVERRIDE` and `MAX_PRIORITY_FEE_OVERRIDE` variables in the `.env` file.
+Finally, if you face issues with gas pricing in subsequent steps, you can manually override gas prices by optionally adding `MAX_FEE_OVERRIDE` and `MAX_PRIORITY_FEE_OVERRIDE` variables in the `.env` file.
 
-Your `.env` file should now look something like this (forcing a 40 gwei gas price):
+Your `.env` file may now look something like this (in this case, forcing a 40 gwei gas price):
 
 ```
 ALCHEMY_ID=aaaaaaaaaaaaaaaaaaaaaaaaaaaa
@@ -42,13 +42,13 @@ Congrats! You instantiated a private ArrakisV2 vault on matic mainnet. At the en
 
 ### Step 3: Fund vault with DAI and WETH
 
-Copy the vault address output in Step 2 and transfer WETH and DAI from anywhere to the newly created vault address on matic mainnet. For the purposes of the tutorial, try to make it close to 50/50 in dollar value if you can! (e.g. transfer in 4 DAI + 1 DAI already deposited in Step 1 and transfer $5 worth of WETH)
+Copy the vault address output in Step 2 and transfer WETH and DAI from anywhere to the newly created vault address on matic mainnet (**DO NOT TRANSFER ANY OTHER TOKENS TO THIS ADDRESS AND MAKE SURE YOU ARE ON MATIC MAINNET NETWORK**). For the purposes of the tutorial, try to make it close to 50/50 in dollar value if you can! (e.g. transfer $5 worth of WETH to the vault and 4 DAI + 1 DAI already deposited in Step 1)
 
 NOTE: Your wallet may throw a warning here, which makes sense since **YOU SHOULD NEVER SEND TOKENS DIRECTLY TO AN ERC20 CONTRACT ADDRESS UNLESS YOU KNOW WHAT YOU ARE DOING** but in this particular case it happens to be safe. As long as you are the sole owner of the entire supply of this Arrakis LP token you can retreive all DAI and WETH holdings from the vault or any of its Uniswap V3 liquidity positions by burning the LP token supply. **NOT THE CASE FOR ARRAKIS LP TOKENS WITH MULTIPLE DISTINCT SHAREHOLDERS WHERE SENDING TOKENS DIRECTLY TO THE CONTRACT WOULD DISTRIBUTE THOSE TOKENS PROPORTIONALLY OVER ALL HOLDERS**
 
 ### Step 4: Monitor your position
 
-Check out the full details of your position with
+Check out the full details of your position with:
 
 ```
 yarn tutorial1-status --network polygon
@@ -56,19 +56,41 @@ yarn tutorial1-status --network polygon
 
 You should see that all of the tokens you deposited in the vault in previous steps, and that they are "leftover" since you havent created any liquidity positions yet.
 
-### Step 5: Deposit liquidity
+### Step 5: Set liquidity position
 
-To finally deposit your liquidity into Uniswap V3 LP positions run this command:
+To deposit liquidity into Uniswap V3 LP positions initially, run this command:
 
 ```
 yarn tutorial1-setPosition --network polygon
 ```
 
-Congrats! You just placed two LP positions on two different fee tiers with your ArrakisV2 vault. You can easily rebalance these into new configurations of Uniswap V3 LP at any time you like!
+Congrats! You just placed your first two LP positions on two different fee tiers via your ArrakisV2 vault.
 
 ### Step 6: Monitor your position
 
-Check out the full details of your position with
+Check out the full details of your position with:
+
+```
+yarn tutorial1-status --network polygon
+```
+
+You should now see your new Uniswap V3 liquiidty positions.
+
+### Step 7: Reposition liquidity
+
+Wait some time (ideally for prices to move a bit)
+
+Then you could reposition your liquidity around the new current price with:
+
+```
+yarn tutorial1-resetPosition --network polygon
+```
+
+These removes the two existing liquidity positions and repalces them with two new ones centered around the new market price.
+
+### Step 8: Monitor your position
+
+Check out the full details of your position with:
 
 ```
 yarn tutorial1-status --network polygon
@@ -76,7 +98,7 @@ yarn tutorial1-status --network polygon
 
 ### Finish Tutorial: Withdraw all your DAI and WETH
 
-Get all your DAI and WETH tokens back with
+Get all your DAI and WETH tokens back with:
 
 ```
 yarn tutorial1-withdraw --network polygon
