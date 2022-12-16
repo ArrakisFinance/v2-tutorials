@@ -56,17 +56,39 @@ yarn tutorial1-status --network polygon
 
 You should see that all of the tokens you deposited in the vault in previous steps, and that they are "leftover" since you havent created any liquidity positions yet.
 
-### Step 5: Deposit liquidity
+### Step 5: Set liquidity position
 
-To finally deposit your liquidity into Uniswap V3 LP positions run this command:
+To deposit liquidity into Uniswap V3 LP positions initially, run this command:
 
 ```
 yarn tutorial1-setPosition --network polygon
 ```
 
-Congrats! You just placed two LP positions on two different fee tiers with your ArrakisV2 vault. You can easily rebalance these into new configurations of Uniswap V3 LP at any time you like!
+Congrats! You just placed your first two LP positions on two different fee tiers via your ArrakisV2 vault.
 
 ### Step 6: Monitor your position
+
+Check out the full details of your position with
+
+```
+yarn tutorial1-status --network polygon
+```
+
+You should now see your new Uniswap V3 liquiidty positions.
+
+### Step 7: Reposition liquidity
+
+Wait some time (ideally for prices to move more than 1%)
+
+Then you could reposition your liquidity around the new current price with:
+
+```
+yarn tutorial1-resetPosition --network polygon
+```
+
+These removes the two existing liquidity positions and repalces them with two new ones.
+
+### Step 8: Monitor your position
 
 Check out the full details of your position with
 
