@@ -5,7 +5,7 @@ import {
   IUniswapV3Factory,
   IUniswapV3Pool,
 } from "../typechain";
-import { getAddresses } from "../src/addresses";
+import { getAddresses as getArrakisAddresses } from "@arrakisfi/v2-core/src";
 import {
   getAmountsForMaxAmount0,
   getAmountsForMaxAmount1,
@@ -20,7 +20,7 @@ dotenv.config({ path: __dirname + "../.env" });
 const maxFeeGlobal = process.env.MAX_FEE_OVERRIDE;
 const maxPriorityFeeGlobal = process.env.MAX_PRIORITY_FEE_OVERRIDE;
 
-const addresses = getAddresses(hre.network.name);
+const arrakisAddresses = getArrakisAddresses(hre.network.name);
 
 const feeTiers = [500, 3000];
 const tickDeltaByFeeTier = [1800, 6900];
@@ -68,7 +68,7 @@ async function main() {
 
   const factory = (await ethers.getContractAt(
     "IUniswapV3Factory",
-    addresses.UniswapV3Factory
+    arrakisAddresses.UniswapV3Factory
   )) as IUniswapV3Factory;
 
   const vault = (await ethers.getContractAt(
@@ -136,7 +136,7 @@ async function main() {
 
   const helper = (await ethers.getContractAt(
     "IArrakisV2Helper",
-    addresses.ArrakisV2Helper
+    arrakisAddresses.ArrakisV2Helper
   )) as IArrakisV2Helper;
 
   const ranges = await vault.getRanges();

@@ -1,6 +1,6 @@
 import hre, { ethers } from "hardhat";
 import { IERC20, IArrakisV2, IArrakisV2Resolver } from "../typechain";
-import { getAddresses } from "../src/addresses";
+import { getAddresses as getArrakisAddresses } from "@arrakisfi/v2-core/src";
 import { sleep } from "../src/utils";
 import { BigNumber } from "ethers";
 import { readFileSync } from "fs";
@@ -10,7 +10,7 @@ dotenv.config({ path: __dirname + "../.env" });
 const maxFeeGlobal = process.env.MAX_FEE_OVERRIDE;
 const maxPriorityFeeGlobal = process.env.MAX_PRIORITY_FEE_OVERRIDE;
 
-const addresses = getAddresses(hre.network.name);
+const arrakisAddresses = getArrakisAddresses(hre.network.name);
 
 async function main() {
   const vaultAddr = readFileSync(`.tutorial1.${hre.network.name}`, {
@@ -68,7 +68,7 @@ async function main() {
 
   const resolver = (await ethers.getContractAt(
     "IArrakisV2Resolver",
-    addresses.ArrakisV2Resolver
+    arrakisAddresses.ArrakisV2Resolver
   )) as IArrakisV2Resolver;
 
   const burnParams = await resolver.standardBurnParams(userBalance, vaultAddr);

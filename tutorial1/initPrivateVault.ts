@@ -2,9 +2,10 @@ import hre, { ethers } from "hardhat";
 import {
   IUniswapV3Factory,
   IArrakisV2Factory,
-  IArrakisV2Extended,
+  IArrakisV2,
 } from "../typechain";
 import { getAddresses } from "../src/addresses";
+import { getAddresses as getArrakisAddresses } from "@arrakisfi/v2-core/src";
 import { sleep } from "../src/utils";
 import { BigNumber } from "ethers";
 import { writeFileSync } from "fs";
@@ -15,6 +16,7 @@ const maxFeeGlobal = process.env.MAX_FEE_OVERRIDE;
 const maxPriorityFeeGlobal = process.env.MAX_PRIORITY_FEE_OVERRIDE;
 
 const addresses = getAddresses(hre.network.name);
+const arrakisAddresses = getArrakisAddresses(hre.network.name);
 
 const feeTiers = [500, 3000];
 const daiToken = addresses.DAI;
@@ -59,13 +61,13 @@ async function main() {
 
   const arrakisV2Factory = (await ethers.getContractAt(
     "IArrakisV2Factory",
-    addresses.ArrakisV2Factory,
+    arrakisAddresses.ArrakisV2Factory,
     user
   )) as IArrakisV2Factory;
 
   const uniswapV3Factory = (await ethers.getContractAt(
     "IUniswapV3Factory",
-    addresses.UniswapV3Factory
+    arrakisAddresses.UniswapV3Factory
   )) as IUniswapV3Factory;
 
   for (let i = 0; i < feeTiers.length; i++) {
@@ -162,10 +164,10 @@ async function main() {
   }
 
   const vaultContract = (await ethers.getContractAt(
-    "IArrakisV2Extended",
+    "IArrakisV2",
     vault,
     user
-  )) as IArrakisV2Extended;
+  )) as IArrakisV2;
 
   gasEstimate = await vaultContract.estimateGas.setRestrictedMint(userAddr);
   if (Number(maxFeeGlobal) == 0) {
