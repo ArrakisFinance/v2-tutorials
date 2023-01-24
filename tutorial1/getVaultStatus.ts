@@ -1,7 +1,7 @@
 import hre, { ethers } from "hardhat";
 import { IArrakisV2, IArrakisV2Helper } from "../typechain";
-import { readFileSync } from "fs";
 import { getAddresses } from "../src/addresses";
+import { readFileSync } from "fs";
 
 const addresses = getAddresses(hre.network.name);
 
@@ -42,6 +42,7 @@ async function main() {
   );
   const liquidity0 = result.amount0.sub(result.leftOver0).sub(result.fee0);
   const liquidity1 = result.amount1.sub(result.leftOver1).sub(result.fee1);
+  console.log("vault address:", vaultAddr);
   console.log("overview:\n");
   console.log({
     total0: `${ethers.utils.formatUnits(
