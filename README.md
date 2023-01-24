@@ -13,7 +13,7 @@ In the "private" setting, no one else but the ArrakisV2 vault owner adds or remo
 When used properly, a "private" or "personal" ArrakisV2 vault can be powerful LP middleware. For someone LPing a certain token pair on Uniswap V3, the vault provides convenience and gas savings for liquidity (re)positioning market operations, especially when multiple Positions are being simultaneously managed and/or when the number and frequency of add/remove LP operations begins to increase. With ArrakisV2, LPs inventing complex and dynamic strategies for liquidity provision on Uniswap V3 have an indispensible framework for implementing and optimizing their strategies.
 
 In this tutorial we take a detailed walkthrough of:
-properly deploying and configuring a private ArrakisV2 vault
-managing DAI/WETH liquidity on Uniswap V3 across two fee tiers (0.05%, 0.3%)
+- properly deploying and configuring a private ArrakisV2 vault
+- managing DAI/WETH liquidity on Uniswap V3 across two fee tiers (0.05%, 0.3%)
 
 Enjoy!
