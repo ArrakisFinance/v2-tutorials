@@ -1,6 +1,5 @@
 import hre, { ethers } from "hardhat";
-import { IERC20, IArrakisV2, IArrakisV2Resolver } from "../typechain";
-import { getAddresses as getArrakisAddresses } from "@arrakisfi/v2-core/src";
+import { IERC20, IArrakisV2 } from "../typechain";
 import { sleep } from "../src/utils";
 import { BigNumber } from "ethers";
 import { readFileSync } from "fs";
@@ -9,8 +8,6 @@ import * as dotenv from "dotenv";
 dotenv.config({ path: __dirname + "../.env" });
 const maxFeeGlobal = process.env.MAX_FEE_OVERRIDE;
 const maxPriorityFeeGlobal = process.env.MAX_PRIORITY_FEE_OVERRIDE;
-
-const arrakisAddresses = getArrakisAddresses(hre.network.name);
 
 async function main() {
   const vaultAddr = readFileSync(`.tutorial1.${hre.network.name}`, {
@@ -38,7 +35,8 @@ async function main() {
   if (
     hre.network.name === "mainnet" ||
     hre.network.name === "polygon" ||
-    hre.network.name === "optimism"
+    hre.network.name === "optimism" ||
+    hre.network.name === "goerli"
   ) {
     console.log(
       `withdraw all from vault: ${vaultAddr} on network: ${
@@ -66,19 +64,8 @@ async function main() {
   const userAddr = await user.getAddress();
   const userBalance = await vaultToken.balanceOf(userAddr);
 
-  const resolver = (await ethers.getContractAt(
-    "IArrakisV2Resolver",
-    arrakisAddresses.ArrakisV2Resolver
-  )) as IArrakisV2Resolver;
-
-  const burnParams = await resolver.standardBurnParams(userBalance, vaultAddr);
-
   console.log("withdrawing...");
-  const gasEstimate = await vault.estimateGas.burn(
-    burnParams,
-    userBalance,
-    userAddr
-  );
+  const gasEstimate = await vault.estimateGas.burn(userBalance, userAddr);
   if (Number(maxFeeGlobal) == 0) {
     feeData = await user?.provider?.getFeeData();
   }
@@ -90,7 +77,7 @@ async function main() {
     maxFeePerGas = feeData.maxFeePerGas;
     maxPriorityFeePerGas = feeData.maxFeePerGas;
   }
-  const tx = await vault.burn(burnParams, userBalance, userAddr, {
+  const tx = await vault.burn(userBalance, userAddr, {
     gasLimit: gasEstimate.add(BigNumber.from("50000")),
     maxFeePerGas: maxFeePerGas,
     maxPriorityFeePerGas: maxPriorityFeePerGas,

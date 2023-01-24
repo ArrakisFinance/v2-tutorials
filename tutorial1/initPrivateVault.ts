@@ -1,11 +1,6 @@
 import hre, { ethers } from "hardhat";
-import {
-  IUniswapV3Factory,
-  IArrakisV2Factory,
-  IArrakisV2,
-} from "../typechain";
+import { IUniswapV3Factory, IArrakisV2Factory, IArrakisV2 } from "../typechain";
 import { getAddresses } from "../src/addresses";
-import { getAddresses as getArrakisAddresses } from "@arrakisfi/v2-core/src";
 import { sleep } from "../src/utils";
 import { BigNumber } from "ethers";
 import { writeFileSync } from "fs";
@@ -16,7 +11,6 @@ const maxFeeGlobal = process.env.MAX_FEE_OVERRIDE;
 const maxPriorityFeeGlobal = process.env.MAX_PRIORITY_FEE_OVERRIDE;
 
 const addresses = getAddresses(hre.network.name);
-const arrakisAddresses = getArrakisAddresses(hre.network.name);
 
 const feeTiers = [500, 3000];
 const daiToken = addresses.DAI;
@@ -44,7 +38,8 @@ async function main() {
   if (
     hre.network.name === "mainnet" ||
     hre.network.name === "polygon" ||
-    hre.network.name === "optimism"
+    hre.network.name === "optimism" ||
+    hre.network.name === "goerli"
   ) {
     console.log(
       `Deploying new DAI/WETH vault to ${
@@ -61,13 +56,13 @@ async function main() {
 
   const arrakisV2Factory = (await ethers.getContractAt(
     "IArrakisV2Factory",
-    arrakisAddresses.ArrakisV2Factory,
+    addresses.ArrakisV2Factory,
     user
   )) as IArrakisV2Factory;
 
   const uniswapV3Factory = (await ethers.getContractAt(
     "IUniswapV3Factory",
-    arrakisAddresses.UniswapV3Factory
+    addresses.UniswapV3Factory
   )) as IUniswapV3Factory;
 
   for (let i = 0; i < feeTiers.length; i++) {
@@ -117,7 +112,6 @@ async function main() {
       init1: init1,
       manager: userAddr,
       routers: [],
-      burnBuffer: "1000",
     },
     true
   );
@@ -142,7 +136,6 @@ async function main() {
       init1: init1,
       manager: userAddr,
       routers: [],
-      burnBuffer: "1000",
     },
     true,
     {

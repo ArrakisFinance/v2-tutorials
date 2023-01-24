@@ -6,7 +6,6 @@ import {
   IUniswapV3Pool,
 } from "../typechain";
 import { getAddresses } from "../src/addresses";
-import { getAddresses as getArrakisAddresses } from "@arrakisfi/v2-core/src";
 import {
   getAmountsForMaxAmount0,
   getAmountsForMaxAmount1,
@@ -22,7 +21,6 @@ const maxFeeGlobal = process.env.MAX_FEE_OVERRIDE;
 const maxPriorityFeeGlobal = process.env.MAX_PRIORITY_FEE_OVERRIDE;
 
 const addresses = getAddresses(hre.network.name);
-const arrakisAddresses = getArrakisAddresses(hre.network.name);
 
 const feeTiers = [500, 3000];
 const tickDeltaByFeeTier = [1800, 6900];
@@ -54,7 +52,8 @@ async function main() {
   if (
     hre.network.name === "mainnet" ||
     hre.network.name === "polygon" ||
-    hre.network.name === "optimism"
+    hre.network.name === "optimism" ||
+    hre.network.name === "goerli"
   ) {
     console.log(
       `reset positions for vault: ${vaultAddr} on network: ${
@@ -68,16 +67,9 @@ async function main() {
     await sleep(10000);
   }
 
-  const positionHelper = await ethers.getContractAt(
-    [
-      "function getPositionId(address, int24, int24) external view returns(bytes32)",
-    ],
-    addresses.PositionLib
-  );
-
   const factory = (await ethers.getContractAt(
     "IUniswapV3Factory",
-    arrakisAddresses.UniswapV3Factory
+    addresses.UniswapV3Factory
   )) as IUniswapV3Factory;
 
   const vault = (await ethers.getContractAt(
@@ -145,7 +137,7 @@ async function main() {
 
   const helper = (await ethers.getContractAt(
     "IArrakisV2Helper",
-    arrakisAddresses.ArrakisV2Helper
+    addresses.ArrakisV2Helper
   )) as IArrakisV2Helper;
 
   const ranges = await vault.getRanges();
@@ -220,87 +212,44 @@ async function main() {
     feeTier: feeTiers[1],
   };
 
-  const { _liquidity: liquidity1 } = await poolA.positions(
-    await positionHelper.getPositionId(
-      vaultAddr,
-      ranges[0].lowerTick,
-      ranges[0].upperTick
-    )
-  );
-  const { _liquidity: liquidity2 } = await poolB.positions(
-    await positionHelper.getPositionId(
-      vaultAddr,
-      ranges[1].lowerTick,
-      ranges[1].upperTick
-    )
+  const maxUint128 = ethers.constants.Two.pow(ethers.BigNumber.from("128")).sub(
+    ethers.constants.One
   );
 
-  // figure out which ranges to remove
-  let adds: any = [rangeA, rangeB];
-  let removes: any = [ranges[0], ranges[1]];
-  if (ranges[0].feeTier == feeTiers[1]) {
-    removes = [ranges[1], ranges[0]];
-  }
-  if (
-    adds[0].lowerTick == removes[0].lowerTick &&
-    adds[0].upperTick == removes[0].upperTick &&
-    adds[1].lowerTick == removes[1].lowerTick &&
-    adds[1].upperTick == removes[1].upperTick
-  ) {
-    adds = [];
-    removes = [];
-  } else {
-    if (
-      adds[0].lowerTick == removes[0].lowerTick &&
-      adds[0].upperTick == removes[0].upperTick
-    ) {
-      adds = [adds[1]];
-      removes = [removes[1]];
-    }
-    if (
-      adds[1].lowerTick == removes[1].lowerTick &&
-      adds[1].upperTick == removes[1].upperTick
-    ) {
-      adds = [adds[0]];
-      removes = [removes[0]];
-    }
-  }
   console.log("rebalance tx...");
-  const gasEstimate = await vault.estimateGas.rebalance(
-    adds,
-    {
-      removes: [
-        {
-          liquidity: liquidity1,
-          range: ranges[0],
-        },
-        {
-          liquidity: liquidity2,
-          range: ranges[1],
-        },
-      ],
-      deposits: [
-        {
-          liquidity: liquidityA[0],
-          range: rangeA,
-        },
-        {
-          liquidity: liquidityB[0],
-          range: rangeB,
-        },
-      ],
-      swap: {
-        payload: "0x",
-        router: ethers.constants.AddressZero,
-        amountIn: ethers.constants.Zero,
-        expectedMinReturn: ethers.constants.Zero,
-        zeroForOne: true,
+  const gasEstimate = await vault.estimateGas.rebalance({
+    burns: [
+      {
+        liquidity: maxUint128,
+        range: ranges[0],
       },
-      minDeposit0: min0,
-      minDeposit1: min1,
+      {
+        liquidity: maxUint128,
+        range: ranges[1],
+      },
+    ],
+    mints: [
+      {
+        liquidity: liquidityA[0],
+        range: rangeA,
+      },
+      {
+        liquidity: liquidityB[0],
+        range: rangeB,
+      },
+    ],
+    swap: {
+      payload: "0x",
+      router: ethers.constants.AddressZero,
+      amountIn: ethers.constants.Zero,
+      expectedMinReturn: ethers.constants.Zero,
+      zeroForOne: true,
     },
-    removes
-  );
+    minBurn0: 0,
+    minBurn1: 0,
+    minDeposit0: min0,
+    minDeposit1: min1,
+  });
   if (Number(maxFeeGlobal) == 0) {
     feeData = await user?.provider?.getFeeData();
   }
@@ -313,19 +262,18 @@ async function main() {
     maxPriorityFeePerGas = feeData.maxFeePerGas;
   }
   const tx = await vault.rebalance(
-    adds,
     {
-      removes: [
+      burns: [
         {
-          liquidity: liquidity1,
+          liquidity: maxUint128,
           range: ranges[0],
         },
         {
-          liquidity: liquidity2,
+          liquidity: maxUint128,
           range: ranges[1],
         },
       ],
-      deposits: [
+      mints: [
         {
           liquidity: liquidityA[0],
           range: rangeA,
@@ -342,10 +290,11 @@ async function main() {
         expectedMinReturn: ethers.constants.Zero,
         zeroForOne: true,
       },
+      minBurn0: 0,
+      minBurn1: 0,
       minDeposit0: min0,
       minDeposit1: min1,
     },
-    removes,
     {
       gasLimit: gasEstimate.add(BigNumber.from("50000")),
       maxFeePerGas: maxFeePerGas,

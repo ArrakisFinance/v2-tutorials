@@ -1,9 +1,9 @@
 import hre, { ethers } from "hardhat";
 import { IArrakisV2, IArrakisV2Helper } from "../typechain";
-import { getAddresses as getArrakisAddresses } from "@arrakisfi/v2-core/src";
 import { readFileSync } from "fs";
+import { getAddresses } from "../src/addresses";
 
-const arrakisAddresses = getArrakisAddresses(hre.network.name);
+const addresses = getAddresses(hre.network.name);
 
 async function main() {
   const vaultAddr = readFileSync(`.tutorial1.${hre.network.name}`, {
@@ -35,7 +35,7 @@ async function main() {
   const t1Symbol = await t1.symbol();
   const arrakisV2Helper = (await ethers.getContractAt(
     "IArrakisV2Helper",
-    arrakisAddresses.ArrakisV2Helper
+    addresses.ArrakisV2Helper
   )) as IArrakisV2Helper;
   const result = await arrakisV2Helper.totalUnderlyingWithFeesAndLeftOver(
     vaultAddr
