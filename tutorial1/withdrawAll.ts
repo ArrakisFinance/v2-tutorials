@@ -36,6 +36,7 @@ async function main() {
     hre.network.name === "mainnet" ||
     hre.network.name === "polygon" ||
     hre.network.name === "optimism" ||
+    hre.network.name === "arbitrum" ||
     hre.network.name === "goerli"
   ) {
     console.log(
