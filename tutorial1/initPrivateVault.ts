@@ -1,9 +1,5 @@
 import hre, { ethers } from "hardhat";
-import {
-  IUniswapV3Factory,
-  IArrakisV2Factory,
-  IArrakisV2Extended,
-} from "../typechain";
+import { IUniswapV3Factory, IArrakisV2Factory, IArrakisV2 } from "../typechain";
 import { getAddresses } from "../src/addresses";
 import { sleep } from "../src/utils";
 import { BigNumber } from "ethers";
@@ -42,7 +38,9 @@ async function main() {
   if (
     hre.network.name === "mainnet" ||
     hre.network.name === "polygon" ||
-    hre.network.name === "optimism"
+    hre.network.name === "optimism" ||
+    hre.network.name === "arbitrum" ||
+    hre.network.name === "goerli"
   ) {
     console.log(
       `Deploying new DAI/WETH vault to ${
@@ -115,7 +113,6 @@ async function main() {
       init1: init1,
       manager: userAddr,
       routers: [],
-      burnBuffer: "1000",
     },
     true
   );
@@ -140,7 +137,6 @@ async function main() {
       init1: init1,
       manager: userAddr,
       routers: [],
-      burnBuffer: "1000",
     },
     true,
     {
@@ -162,10 +158,10 @@ async function main() {
   }
 
   const vaultContract = (await ethers.getContractAt(
-    "IArrakisV2Extended",
+    "IArrakisV2",
     vault,
     user
-  )) as IArrakisV2Extended;
+  )) as IArrakisV2;
 
   gasEstimate = await vaultContract.estimateGas.setRestrictedMint(userAddr);
   if (Number(maxFeeGlobal) == 0) {

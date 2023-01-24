@@ -1,7 +1,7 @@
 import hre, { ethers } from "hardhat";
 import { IArrakisV2, IArrakisV2Helper } from "../typechain";
-import { getAddresses } from "../src/addresses";
 import { readFileSync } from "fs";
+import { getAddresses } from "../src/addresses";
 
 const addresses = getAddresses(hre.network.name);
 

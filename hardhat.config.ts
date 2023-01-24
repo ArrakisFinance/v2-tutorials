@@ -14,7 +14,6 @@ import * as dotenv from "dotenv";
 dotenv.config({ path: __dirname + "/.env" });
 const ALCHEMY_ID = process.env.ALCHEMY_ID;
 const PK = process.env.PK;
-const TEST_PK = process.env.TEST_PK;
 
 const config: HardhatUserConfig = {
   defaultNetwork: "hardhat",
@@ -43,7 +42,7 @@ const config: HardhatUserConfig = {
     mainnet: {
       accounts: PK ? [PK] : [],
       chainId: 1,
-      url: `https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_ID}`,
+      url: `https://eth-mainnet.g.alchemy.com/v2/${ALCHEMY_ID}`,
     },
     polygon: {
       accounts: PK ? [PK] : [],
@@ -55,10 +54,15 @@ const config: HardhatUserConfig = {
       chainId: 10,
       url: `https://opt-mainnet.g.alchemy.com/v2/${ALCHEMY_ID}`,
     },
+    arbitrum: {
+      accounts: PK ? [PK] : [],
+      chainId: 42161,
+      url: `https://arb-mainnet.g.alchemy.com/v2/${ALCHEMY_ID}`,
+    },
     goerli: {
-      accounts: TEST_PK ? [TEST_PK] : [],
+      accounts: PK ? [PK] : [],
       chainId: 5,
-      url: `https://eth-goerli.alchemyapi.io/v2/${ALCHEMY_ID}`,
+      url: `https://eth-goerli.g.alchemy.com/v2/${ALCHEMY_ID}`,
     },
   },
 
@@ -67,7 +71,7 @@ const config: HardhatUserConfig = {
       {
         version: "0.8.13",
         settings: {
-          optimizer: { enabled: true, runs: 866 },
+          optimizer: { enabled: true, runs: 999999 },
         },
       },
     ],

@@ -52,7 +52,9 @@ async function main() {
   if (
     hre.network.name === "mainnet" ||
     hre.network.name === "polygon" ||
-    hre.network.name === "optimism"
+    hre.network.name === "optimism" ||
+    hre.network.name === "arbitrum" ||
+    hre.network.name === "goerli"
   ) {
     console.log(
       `set positions for vault: ${vaultAddr} on network: ${
@@ -220,32 +222,30 @@ async function main() {
   };
 
   console.log("rebalance tx...");
-  const gasEstimate = await vault.estimateGas.rebalance(
-    [rangeA, rangeB],
-    {
-      removes: [],
-      deposits: [
-        {
-          liquidity: liquidityA[0],
-          range: rangeA,
-        },
-        {
-          liquidity: liquidityB[0],
-          range: rangeB,
-        },
-      ],
-      swap: {
-        payload: "0x",
-        router: ethers.constants.AddressZero,
-        amountIn: ethers.constants.Zero,
-        expectedMinReturn: ethers.constants.Zero,
-        zeroForOne: true,
+  const gasEstimate = await vault.estimateGas.rebalance({
+    burns: [],
+    mints: [
+      {
+        liquidity: liquidityA[0],
+        range: rangeA,
       },
-      minDeposit0: min0,
-      minDeposit1: min1,
+      {
+        liquidity: liquidityB[0],
+        range: rangeB,
+      },
+    ],
+    swap: {
+      payload: "0x",
+      router: ethers.constants.AddressZero,
+      amountIn: ethers.constants.Zero,
+      expectedMinReturn: ethers.constants.Zero,
+      zeroForOne: true,
     },
-    []
-  );
+    minBurn0: 0,
+    minBurn1: 0,
+    minDeposit0: min0,
+    minDeposit1: min1,
+  });
   if (Number(maxFeeGlobal) == 0) {
     feeData = await user?.provider?.getFeeData();
   }
@@ -258,10 +258,9 @@ async function main() {
     maxPriorityFeePerGas = feeData.maxFeePerGas;
   }
   const tx = await vault.rebalance(
-    [rangeA, rangeB],
     {
-      removes: [],
-      deposits: [
+      burns: [],
+      mints: [
         {
           liquidity: liquidityA[0],
           range: rangeA,
@@ -278,10 +277,11 @@ async function main() {
         expectedMinReturn: ethers.constants.Zero,
         zeroForOne: true,
       },
+      minBurn0: 0,
+      minBurn1: 0,
       minDeposit0: min0,
       minDeposit1: min1,
     },
-    [],
     {
       gasLimit: gasEstimate.add(BigNumber.from("50000")),
       maxFeePerGas: maxFeePerGas,
