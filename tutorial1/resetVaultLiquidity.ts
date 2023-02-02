@@ -170,7 +170,7 @@ async function main() {
     sqrtPriceAboveB
   );
 
-  const liquidityB = liquidityB0[0].gte(liquidityB1[0])
+  const liquidityB = liquidityB0[0].lt(liquidityB1[0])
     ? liquidityB0
     : liquidityB1;
 
