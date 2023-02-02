@@ -1,5 +1,5 @@
 {
-  "name": "@arrakisfi/v2-core",
+  "name": "@arrakisfi/v2-tutorials",
   "scripts": {
     "build": "yarn compile && npx tsc",
     "compile": "npx hardhat compile --force",
@@ -22,7 +22,7 @@
     "tutorial1-withdraw": "npx hardhat run ./tutorial1/withdrawAll.ts"
   },
   "devDependencies": {
-    "@arrakisfi/v2-core": "1.0.4",
+    "@arrakisfi/v2-core": "1.0.5",
     "@arrakisfi/v3-lib-0.8": "0.1.3",
     "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers",
     "@nomiclabs/hardhat-etherscan": "3.1.0",
@@ -63,7 +63,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/ArrakisFinance/v2-core"
+    "url": "git+ssh://git@github.com/ArrakisFinance/v2-tutorials"
   },
   "keywords": [
     "arrakis",
@@ -77,10 +77,10 @@
   ],
   "author": "Arrakis",
   "bugs": {
-    "url": "https://github.com/ArrakisFinance/v2-core/issues"
+    "url": "https://github.com/ArrakisFinance/v2-tutorials/issues"
   },
-  "homepage": "https://github.com/ArrakisFinance/v2-core#readme",
-  "description": "Arrakis V2 Automated Market Maker",
+  "homepage": "https://github.com/ArrakisFinance/v2-tutorials#readme",
+  "description": "Arrakis V2 Tutorials",
   "license": "MIT",
-  "version": "0.1.3"
+  "version": "0.2.0"
 }

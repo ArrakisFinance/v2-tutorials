@@ -178,12 +178,14 @@ async function main() {
     sqrtPriceAboveB
   );
 
-  const liquidityB = liquidityB0[0].gte(liquidityB1[0])
+  const liquidityB = liquidityB0[0].lt(liquidityB1[0])
     ? liquidityB0
     : liquidityB1;
 
   const remaining0 = gross0.sub(liquidityB[1]);
   const remaining1 = gross1.sub(liquidityB[2]);
+
+  console.log(remaining0.toString(), remaining1.toString());
 
   const liquidityA0 = getAmountsForMaxAmount0(
     remaining0,
@@ -197,6 +199,17 @@ async function main() {
     sqrtPriceA,
     sqrtPriceBelowA,
     sqrtPriceAboveA
+  );
+
+  console.log(
+    liquidityA1[0].toString(),
+    liquidityA1[1].toString(),
+    liquidityA1[2].toString()
+  );
+  console.log(
+    liquidityA0[0].toString(),
+    liquidityA0[1].toString(),
+    liquidityA0[2].toString()
   );
 
   const liquidityA = liquidityA0[0].lt(liquidityA1[0])
@@ -222,6 +235,16 @@ async function main() {
   };
 
   console.log("rebalance tx...");
+  console.log(
+    liquidityA[0].toString(),
+    liquidityA[1].toString(),
+    liquidityA[2].toString()
+  );
+  console.log(
+    liquidityB[0].toString(),
+    liquidityB[1].toString(),
+    liquidityB[2].toString()
+  );
   const gasEstimate = await vault.estimateGas.rebalance({
     burns: [],
     mints: [

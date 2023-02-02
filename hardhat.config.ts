@@ -33,7 +33,7 @@ const config: HardhatUserConfig = {
     hardhat: {
       forking: {
         url: `https://polygon-mainnet.g.alchemy.com/v2/${ALCHEMY_ID}`,
-        blockNumber: 36581702,
+        blockNumber: 38809120,
       },
       accounts: {
         accountsBalance: ethers.utils.parseEther("10000").toString(),
