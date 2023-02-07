@@ -34,7 +34,7 @@ async function main() {
     return;
   }
   let maxFeePerGas: BigNumber = feeData.maxFeePerGas;
-  let maxPriorityFeePerGas: BigNumber = feeData.maxFeePerGas;
+  let maxPriorityFeePerGas: BigNumber = feeData.maxPriorityFeePerGas;
   if (
     hre.network.name === "mainnet" ||
     hre.network.name === "polygon" ||
@@ -125,7 +125,7 @@ async function main() {
     feeData.maxPriorityFeePerGas != undefined
   ) {
     maxFeePerGas = feeData.maxFeePerGas;
-    maxPriorityFeePerGas = feeData.maxFeePerGas;
+    maxPriorityFeePerGas = feeData.maxPriorityFeePerGas;
   }
   const tx = await arrakisV2Factory.deployVault(
     {
@@ -173,7 +173,7 @@ async function main() {
     feeData.maxPriorityFeePerGas != undefined
   ) {
     maxFeePerGas = feeData.maxFeePerGas;
-    maxPriorityFeePerGas = feeData.maxFeePerGas;
+    maxPriorityFeePerGas = feeData.maxPriorityFeePerGas;
   }
   const tx2 = await vaultContract.setRestrictedMint(userAddr, {
     gasLimit: gasEstimate.add(BigNumber.from("20000")),
@@ -206,7 +206,7 @@ async function main() {
     feeData.maxPriorityFeePerGas != undefined
   ) {
     maxFeePerGas = feeData.maxFeePerGas;
-    maxPriorityFeePerGas = feeData.maxFeePerGas;
+    maxPriorityFeePerGas = feeData.maxPriorityFeePerGas;
   }
   const tx3 = await daiTokenContract.approve(vault, oneDai, {
     gasLimit: gasEstimate.add(BigNumber.from("20000")),
@@ -227,7 +227,7 @@ async function main() {
     feeData.maxPriorityFeePerGas != undefined
   ) {
     maxFeePerGas = feeData.maxFeePerGas;
-    maxPriorityFeePerGas = feeData.maxFeePerGas;
+    maxPriorityFeePerGas = feeData.maxPriorityFeePerGas;
   }
   const tx4 = await vaultContract.mint(oneDai, userAddr, {
     gasLimit: gasEstimate.add(BigNumber.from("20000")),
