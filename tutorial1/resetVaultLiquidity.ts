@@ -48,7 +48,7 @@ async function main() {
     return;
   }
   let maxFeePerGas: BigNumber = feeData.maxFeePerGas;
-  let maxPriorityFeePerGas: BigNumber = feeData.maxFeePerGas;
+  let maxPriorityFeePerGas: BigNumber = feeData.maxPriorityFeePerGas;
   if (
     hre.network.name === "mainnet" ||
     hre.network.name === "polygon" ||
@@ -260,7 +260,7 @@ async function main() {
     feeData.maxPriorityFeePerGas != undefined
   ) {
     maxFeePerGas = feeData.maxFeePerGas;
-    maxPriorityFeePerGas = feeData.maxFeePerGas;
+    maxPriorityFeePerGas = feeData.maxPriorityFeePerGas;
   }
   const tx = await vault.rebalance(
     {
