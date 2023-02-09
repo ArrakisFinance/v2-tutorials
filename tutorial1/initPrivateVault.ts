@@ -220,7 +220,8 @@ async function main() {
   await tx3.wait();
 
   console.log("depositing...");
-  gasEstimate = await vaultContract.estimateGas.mint(oneDai, userAddr);
+  const oneEth = ethers.utils.parseEther("1");
+  gasEstimate = await vaultContract.estimateGas.mint(oneEth, userAddr);
   if (Number(maxFeeGlobal) == 0) {
     feeData = await user?.provider?.getFeeData();
   }
@@ -232,7 +233,7 @@ async function main() {
     maxFeePerGas = feeData.maxFeePerGas;
     maxPriorityFeePerGas = feeData.maxPriorityFeePerGas;
   }
-  const tx4 = await vaultContract.mint(oneDai, userAddr, {
+  const tx4 = await vaultContract.mint(oneEth, userAddr, {
     gasLimit: gasEstimate.add(BigNumber.from("20000")),
     maxFeePerGas: maxPriorityFeePerGas,
     maxPriorityFeePerGas: maxPriorityFeePerGas,
