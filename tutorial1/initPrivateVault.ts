@@ -88,7 +88,10 @@ async function main() {
     user
   );
 
-  const oneDai = ethers.utils.parseEther("1");
+  const oneDai = ethers.utils.parseUnits(
+    "1",
+    (await daiTokenContract.decimals()).toString()
+  );
   const daiTokenBal = await daiTokenContract.balanceOf(userAddr);
 
   if (daiTokenBal.lt(oneDai)) {
