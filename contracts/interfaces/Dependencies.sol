@@ -13,3 +13,6 @@ import {
 import {
     IArrakisV2Resolver
 } from "@arrakisfi/v2-core/contracts/interfaces/IArrakisV2Resolver.sol";
+import {
+    ISwapRouter
+} from "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol";
