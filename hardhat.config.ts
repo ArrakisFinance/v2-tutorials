@@ -64,6 +64,11 @@ const config: HardhatUserConfig = {
       chainId: 5,
       url: `https://eth-goerli.g.alchemy.com/v2/${ALCHEMY_ID}`,
     },
+    sepolia: {
+      accounts: PK ? [PK] : [],
+      chainId: 11155111,
+      url: `https://eth-sepolia.g.alchemy.com/v2/${ALCHEMY_ID}`,
+    },
   },
 
   solidity: {
