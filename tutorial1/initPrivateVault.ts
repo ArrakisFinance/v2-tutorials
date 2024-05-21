@@ -235,7 +235,7 @@ async function main() {
   }
   const tx4 = await vaultContract.mint(oneEth, userAddr, {
     gasLimit: gasEstimate.add(BigNumber.from("20000")),
-    maxFeePerGas: maxPriorityFeePerGas,
+    maxFeePerGas: maxFeePerGas,
     maxPriorityFeePerGas: maxPriorityFeePerGas,
   });
   console.log("tx hash:", tx4.hash);
