@@ -23,7 +23,8 @@
     "tutorial1-status": "npx hardhat run ./tutorial1/getVaultStatus.ts",
     "tutorial1-setPosition": "npx hardhat run ./tutorial1/setVaultLiquidity.ts",
     "tutorial1-resetPosition": "npx hardhat run ./tutorial1/resetVaultLiquidity.ts",
-    "tutorial1-withdraw": "npx hardhat run ./tutorial1/withdrawAll.ts"
+    "tutorial1-withdraw": "npx hardhat run ./tutorial1/withdrawAll.ts",
+    "tutorial1-remove": "npx hardhat run ./tutorial1/removeLiquidity.ts"
   },
   "devDependencies": {
     "@arrakisfi/v2-core": "1.1.2",
