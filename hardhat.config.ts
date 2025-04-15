@@ -59,6 +59,16 @@ const config: HardhatUserConfig = {
       chainId: 42161,
       url: `https://arb-mainnet.g.alchemy.com/v2/${ALCHEMY_ID}`,
     },
+    gnosis: {
+      accounts: PK ? [PK] : [],
+      chainId: 100,
+      url: `https://gnosis-rpc.publicnode.com`,
+    },
+    base: {
+      accounts: PK ? [PK] : [],
+      chainId: 8453,
+      url: "https://mainnet.base.org",
+    },
     goerli: {
       accounts: PK ? [PK] : [],
       chainId: 5,
