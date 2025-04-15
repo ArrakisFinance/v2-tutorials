@@ -1,6 +1,7 @@
 import hre, { ethers } from "hardhat";
 import { sleep } from "../src/utils";
 import { BigNumber } from "ethers";
+import { readFileSync } from "fs";
 
 import * as dotenv from "dotenv";
 dotenv.config({ path: __dirname + "../.env" });
